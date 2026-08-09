@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>SalesAI | Sales Forecasting</title>
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}">
+
+<style>
+
+    /* =========================================
+       HOME PAGE
+    ========================================= */
+
+    body {
+        margin: 0;
+        background: #050817 !important;
+        color: white !important;
+    }
+
+    .home-page {
+        min-height: calc(100vh - 72px);
+
+        display: flex;
+        align-items: center;
+
+        position: relative;
+
+        overflow: hidden;
+    }
+
+
+    /* =========================================
+       BACKGROUND GLOW
+    ========================================= */
+
+    .glow-one,
+    .glow-two {
+        position: absolute;
+
+        width: 350px;
+        height: 350px;
+
+        border-radius: 50%;
+
+        filter: blur(100px);
+
+        opacity: 0.15;
+
+        pointer-events: none;
+    }
+
+    .glow-one {
+        top: 5%;
+        left: -100px;
+        background: #2452dc;
+    }
+
+    .glow-two {
+        bottom: -120px;
+        right: -80px;
+        background: #6b5cff;
+    }
+
+
+    /* =========================================
+       HERO
+    ========================================= */
+
+    .hero {
+        width: 90%;
+        max-width: 1200px;
+
+        margin: auto;
+
+        display: grid;
+
+        grid-template-columns:
+            1.2fr 0.8fr;
+
+        gap: 60px;
+
+        align-items: center;
+
+        position: relative;
+
+        z-index: 2;
+    }
+
+
+    .hero-content small {
+        color: #5f8cff;
+
+        font-size: 11px;
+
+        font-weight: 700;
+
+        letter-spacing: 2.5px;
+    }
+
+    .hero-content h1 {
+        margin: 18px 0;
+
+        font-size: 58px;
+
+        line-height: 1.08;
+
+        font-weight: 800;
+
+        color: white;
+    }
+
+    .hero-content h1 span {
+        color: #6fa6ff;
+    }
+
+    .hero-content p {
+        max-width: 600px;
+
+        color: #7d8ba3;
+
+        font-size: 15px;
+
+        line-height: 1.8;
+
+        margin-bottom: 30px;
+    }
+
+
+    /* =========================================
+       BUTTONS
+    ========================================= */
+
+    .hero-buttons {
+        display: flex;
+
+        gap: 14px;
+
+        flex-wrap: wrap;
+    }
+
+    .primary-button,
+    .secondary-button {
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        padding: 14px 24px;
+
+        border-radius: 10px;
+
+        text-decoration: none;
+
+        font-size: 12px;
+
+        font-weight: 700;
+
+        transition: 0.25s;
+    }
+
+    .primary-button {
+        color: white;
+
+        background:
+            linear-gradient(
+                135deg,
+                #2452dc,
+                #5f9cff
+            );
+
+        box-shadow:
+            0 12px 30px
+            rgba(60,110,255,0.25);
+    }
+
+    .primary-button:hover {
+        transform: translateY(-3px);
+    }
+
+    .secondary-button {
+        color: #b7c5dd;
+
+        background: #0b1425;
+
+        border:
+            1px solid #263653;
+    }
+
+    .secondary-button:hover {
+        color: white;
+
+        border-color: #5f8cff;
+
+        transform: translateY(-3px);
+    }
+
+
+    /* =========================================
+       HERO VISUAL
+    ========================================= */
+
+    .hero-visual {
+        display: flex;
+
+        justify-content: center;
+
+        align-items: center;
+    }
+
+    .ai-card {
+        width: 340px;
+
+        padding: 30px;
+
+        background:
+            linear-gradient(
+                145deg,
+                #111d35,
+                #080e1c
+            );
+
+        border:
+            1px solid #1d2b49;
+
+        border-radius: 22px;
+
+        box-shadow:
+            0 25px 70px
+            rgba(0,0,0,0.45);
+
+        position: relative;
+    }
+
+
+    .ai-icon {
+        width: 65px;
+        height: 65px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 16px;
+
+        background: #0d1d3b;
+
+        border:
+            1px solid #284a85;
+
+        font-size: 28px;
+
+        margin-bottom: 22px;
+    }
+
+    .ai-card h2 {
+        margin: 0 0 8px;
+
+        font-size: 21px;
+
+        color: white;
+    }
+
+    .ai-card p {
+        margin: 0 0 25px;
+
+        color: #697993;
+
+        font-size: 11px;
+
+        line-height: 1.6;
+    }
+
+
+    /* =========================================
+       MINI ANALYTICS
+    ========================================= */
+
+    .mini-label {
+        display: flex;
+
+        justify-content: space-between;
+
+        margin-bottom: 8px;
+
+        color: #687892;
+
+        font-size: 10px;
+    }
+
+    .mini-label strong {
+        color: #6fa6ff;
+    }
+
+    .progress {
+        height: 7px;
+
+        background: #0a1221;
+
+        border-radius: 20px;
+
+        overflow: hidden;
+
+        margin-bottom: 20px;
+    }
+
+    .progress span {
+        display: block;
+
+        height: 100%;
+
+        width: 89.9%;
+
+        background:
+            linear-gradient(
+                90deg,
+                #2452dc,
+                #6fa6ff
+            );
+
+        border-radius: 20px;
+    }
+
+
+    .mini-stats {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 10px;
+    }
+
+    .mini-stat {
+        padding: 14px;
+
+        background: #091426;
+
+        border:
+            1px solid #172943;
+
+        border-radius: 10px;
+    }
+
+    .mini-stat span {
+        display: block;
+
+        color: #58677e;
+
+        font-size: 9px;
+
+        margin-bottom: 6px;
+    }
+
+    .mini-stat strong {
+        color: #dbe4f5;
+
+        font-size: 14px;
+    }
+
+
+    /* =========================================
+       FEATURES
+    ========================================= */
+
+    .features {
+        width: 90%;
+        max-width: 1200px;
+
+        margin: 0 auto 60px;
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(3, 1fr);
+
+        gap: 18px;
+
+        position: relative;
+
+        z-index: 2;
+    }
+
+    .feature-card {
+        padding: 22px;
+
+        background: #091120;
+
+        border:
+            1px solid #172943;
+
+        border-radius: 15px;
+
+        transition: 0.25s;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-4px);
+
+        border-color: #284a85;
+    }
+
+    .feature-icon {
+        font-size: 22px;
+
+        margin-bottom: 12px;
+    }
+
+    .feature-card h3 {
+        margin: 0 0 7px;
+
+        font-size: 14px;
+
+        color: white;
+    }
+
+    .feature-card p {
+        margin: 0;
+
+        color: #687892;
+
+        font-size: 11px;
+
+        line-height: 1.6;
+    }
+
+
+    /* =========================================
+       RESPONSIVE
+    ========================================= */
+
+    @media (max-width: 900px) {
+
+        .hero {
+            grid-template-columns: 1fr;
+
+            text-align: center;
+
+            padding: 60px 0;
+        }
+
+        .hero-content p {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            justify-content: center;
+        }
+
+        .features {
+            grid-template-columns: 1fr;
+        }
+
+    }
+
+
+    @media (max-width: 600px) {
+
+        .hero-content h1 {
+            font-size: 39px;
+        }
+
+        .ai-card {
+            width: auto;
+
+            max-width: 340px;
+        }
+
+    }
+
+</style>
+
+
+</head>
+
+<body>
+
+<!-- =========================================
+     NAVBAR
+========================================= -->
+
+<div class="navbar">
+
+<div class="brand">
+
+    <img
+        src="{{ url_for(
+            'static',
+            filename='images/store_ai.png'
+        ) }}"
+        alt="SalesAI">
+
+    <div class="brand-name">
+
+        <span>
+            SalesAI
+        </span>
+
+        <small>
+            SALES FORECASTING
+        </small>
+
+    </div>
+
+</div>
+
+
+<div class="navigation">
+
+    <a href="/"
+       class="active">
+        Home
+    </a>
+
+    <a href="/predict">
+        Predict
+    </a>
+
+    <a href="/dashboard">
+        Dashboard
+    </a>
+
+    <a href="/about">
+        About
+    </a>
+
+</div>
+
+
+</div>
+
+<!-- =========================================
+     HOME
+========================================= -->
+
+<div class="home-page">
+
+
+<div class="glow-one"></div>
+
+<div class="glow-two"></div>
+
+
+<div class="hero">
+
+
+    <!-- HERO CONTENT -->
+
+    <div class="hero-content">
+
+        <small>
+            ARTIFICIAL INTELLIGENCE • SALES ANALYTICS
+        </small>
+
+        <h1>
+
+            Predict Future
+            <br>
+
+            <span>Sales With AI.</span>
+
+        </h1>
+
+        <p>
+
+            SalesAI uses machine learning to
+            forecast daily store sales and
+            transform historical business data
+            into actionable predictions.
+
+        </p>
+
+
+        <div class="hero-buttons">
+
+            <a href="/predict"
+               class="primary-button">
+
+                Start Prediction →
+
+            </a>
+
+            <a href="/dashboard"
+               class="secondary-button">
+
+                View Dashboard
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- AI CARD -->
+
+    <div class="hero-visual">
+
+        <div class="ai-card">
+
+
+            <div class="ai-icon">
+                🤖
+            </div>
+
+
+            <h2>
+                XGBoost Forecast Engine
+            </h2>
+
+            <p>
+                AI-powered regression model
+                designed for daily sales
+                forecasting.
+            </p>
+
+
+            <div class="mini-label">
+
+                <span>
+                    Model R² Score
+                </span>
+
+                <strong>
+                    89.9%
+                </strong>
+
+            </div>
+
+            <div class="progress">
+                <span></span>
+            </div>
+
+
+            <div class="mini-stats">
+
+                <div class="mini-stat">
+
+                    <span>
+                        MODEL
+                    </span>
+
+                    <strong>
+                        XGBoost
+                    </strong>
+
+                </div>
+
+
+                <div class="mini-stat">
+
+                    <span>
+                        FEATURES
+                    </span>
+
+                    <strong>
+                        13
+                    </strong>
+
+                </div>
+
+
+                <div class="mini-stat">
+
+                    <span>
+                        DATASET
+                    </span>
+
+                    <strong>
+                        Rossmann
+                    </strong>
+
+                </div>
+
+
+                <div class="mini-stat">
+
+                    <span>
+                        STATUS
+                    </span>
+
+                    <strong>
+                        Active
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</div>
+
+<!-- =========================================
+     FEATURES
+========================================= -->
+
+<div class="features">
+
+
+<div class="feature-card">
+
+    <div class="feature-icon">
+        📈
+    </div>
+
+    <h3>
+        Daily Forecasting
+    </h3>
+
+    <p>
+        Predict expected sales for
+        individual stores using
+        historical business data.
+    </p>
+
+</div>
+
+
+<div class="feature-card">
+
+    <div class="feature-icon">
+        🧠
+    </div>
+
+    <h3>
+        Machine Learning
+    </h3>
+
+    <p>
+        XGBoost regression provides
+        intelligent sales predictions
+        from multiple store features.
+    </p>
+
+</div>
+
+
+<div class="feature-card">
+
+    <div class="feature-icon">
+        📊
+    </div>
+
+    <h3>
+        Business Dashboard
+    </h3>
+
+    <p>
+        Track prediction history,
+        sales trends and key
+        performance indicators.
+    </p>
+
+</div>
+
+
+</div>
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

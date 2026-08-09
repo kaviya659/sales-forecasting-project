@@ -1,0 +1,1673 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>SalesAI Dashboard</title>
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}">
+
+<style>
+
+    /* =========================================
+       DASHBOARD BASE
+    ========================================= */
+
+    body {
+        background: #050817 !important;
+        color: white !important;
+        margin: 0;
+    }
+
+    .dashboard-container {
+        width: 90%;
+        max-width: 1250px;
+        margin: auto;
+        padding: 45px 0;
+    }
+
+
+    /* =========================================
+       NAVBAR
+    ========================================= */
+
+    .navbar {
+        min-height: 72px;
+
+        padding: 0 5%;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        background: #070c19;
+
+        border-bottom:
+            1px solid #17233b;
+    }
+
+    .brand {
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+    }
+
+    .brand img {
+        width: 45px;
+
+        height: 45px;
+
+        object-fit: contain;
+    }
+
+    .brand-name {
+        display: flex;
+
+        flex-direction: column;
+    }
+
+    .brand-name span {
+        color: white;
+
+        font-size: 20px;
+
+        font-weight: 800;
+    }
+
+    .brand-name small {
+        color: #60708b;
+
+        font-size: 8px;
+
+        letter-spacing: 1.5px;
+    }
+
+    .navigation {
+        display: flex;
+
+        align-items: center;
+
+        gap: 8px;
+    }
+
+    .navigation a {
+        color: #8c9ab0;
+
+        text-decoration: none;
+
+        padding: 10px 15px;
+
+        border-radius: 8px;
+
+        font-size: 13px;
+
+        transition: 0.25s;
+    }
+
+    .navigation a:hover,
+    .navigation a.active {
+        color: white;
+
+        background: #12234a;
+    }
+
+
+    /* =========================================
+       HEADER
+    ========================================= */
+
+    .dashboard-heading {
+        margin-bottom: 25px;
+    }
+
+    .dashboard-heading small {
+        color: #5f8cff;
+
+        font-size: 11px;
+
+        font-weight: 700;
+
+        letter-spacing: 2px;
+    }
+
+    .dashboard-heading h1 {
+        margin: 10px 0;
+
+        font-size: 38px;
+
+        color: white;
+    }
+
+    .dashboard-heading p {
+        color: #7d8ba3;
+
+        font-size: 14px;
+    }
+
+
+    /* =========================================
+       FILTER PANEL
+    ========================================= */
+
+    .filter-panel {
+        padding: 22px;
+
+        margin-bottom: 25px;
+
+        background:
+            linear-gradient(
+                145deg,
+                #111d35,
+                #080e1c
+            );
+
+        border:
+            1px solid #1d2b49;
+
+        border-radius: 16px;
+    }
+
+    .filter-title {
+        color: white;
+
+        font-size: 14px;
+
+        font-weight: 700;
+
+        margin-bottom: 18px;
+    }
+
+    .filter-form {
+        display: grid;
+
+        grid-template-columns:
+            repeat(4, 1fr);
+
+        gap: 14px;
+
+        align-items: end;
+    }
+
+    .filter-group {
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 7px;
+    }
+
+    .filter-group label {
+        color: #71809a;
+
+        font-size: 10px;
+
+        text-transform: uppercase;
+
+        letter-spacing: 1px;
+    }
+
+    .filter-group input,
+    .filter-group select {
+        width: 100%;
+
+        box-sizing: border-box;
+
+        padding: 11px 12px;
+
+        border:
+            1px solid #263653;
+
+        border-radius: 9px;
+
+        background: #091426;
+
+        color: #dce7fa;
+
+        outline: none;
+
+        font-size: 12px;
+    }
+
+    .filter-group input:focus,
+    .filter-group select:focus {
+        border-color: #5f8cff;
+    }
+
+    .filter-buttons {
+        display: flex;
+
+        gap: 10px;
+
+        margin-top: 15px;
+    }
+
+    .filter-btn {
+        border: none;
+
+        padding: 11px 20px;
+
+        border-radius: 9px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #2452dc,
+                #5f9cff
+            );
+
+        color: white;
+
+        font-size: 12px;
+
+        font-weight: 700;
+
+        cursor: pointer;
+    }
+
+    .clear-btn {
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        padding: 11px 20px;
+
+        border-radius: 9px;
+
+        background: #101b30;
+
+        border:
+            1px solid #263653;
+
+        color: #8fa1bd;
+
+        text-decoration: none;
+
+        font-size: 12px;
+    }
+
+
+    /* =========================================
+       KPI CARDS
+    ========================================= */
+
+    .stats {
+        display: grid;
+
+        grid-template-columns:
+            repeat(4, 1fr);
+
+        gap: 18px;
+
+        margin-bottom: 25px;
+    }
+
+    .stat-card {
+        padding: 24px;
+
+        background:
+            linear-gradient(
+                145deg,
+                #111d35,
+                #080e1c
+            );
+
+        border:
+            1px solid #1d2b49;
+
+        border-radius: 16px;
+
+        box-shadow:
+            0 15px 40px
+            rgba(0,0,0,0.35);
+    }
+
+    .stat-card span {
+        color: #71809a;
+
+        font-size: 11px;
+
+        text-transform: uppercase;
+
+        letter-spacing: 1px;
+    }
+
+    .stat-card h2 {
+        margin: 15px 0 5px;
+
+        color: white;
+
+        font-size: 26px;
+    }
+
+    .stat-card p {
+        margin: 0;
+
+        color: #53627b;
+
+        font-size: 11px;
+    }
+
+
+    /* =========================================
+       MAIN GRID
+    ========================================= */
+
+    .dashboard-grid {
+        display: grid;
+
+        grid-template-columns:
+            2fr 1fr;
+
+        gap: 20px;
+    }
+
+    .dashboard-box {
+        padding: 25px;
+
+        background:
+            linear-gradient(
+                145deg,
+                #101a30,
+                #080e1c
+            );
+
+        border:
+            1px solid #1c2945;
+
+        border-radius: 18px;
+
+        box-shadow:
+            0 20px 50px
+            rgba(0,0,0,0.35);
+    }
+
+    .box-title {
+        font-size: 16px;
+
+        font-weight: 700;
+
+        color: white;
+
+        margin-bottom: 22px;
+    }
+
+
+    /* =========================================
+       PROFESSIONAL LINE CHART
+    ========================================= */
+
+    .line-chart {
+        display: flex;
+
+        width: 100%;
+
+        min-height: 360px;
+    }
+
+    .chart-y-axis {
+        width: 45px;
+
+        display: flex;
+
+        flex-direction: column;
+
+        justify-content: space-between;
+
+        padding:
+            20px 8px 55px 0;
+
+        color: #61708a;
+
+        font-size: 9px;
+
+        text-align: right;
+    }
+
+    .chart-area {
+        flex: 1;
+
+        position: relative;
+
+        min-width: 0;
+    }
+
+    .sales-line-chart {
+        width: 100%;
+
+        height: 320px;
+
+        overflow: visible;
+    }
+
+    .grid-line {
+        stroke: #1b2942;
+
+        stroke-width: 1;
+
+        stroke-dasharray: 5 7;
+    }
+
+    .sales-line {
+        fill: none;
+
+        stroke: #5f9cff;
+
+        stroke-width: 5;
+
+        stroke-linecap: round;
+
+        stroke-linejoin: round;
+
+        filter:
+            drop-shadow(
+                0 0 8px
+                rgba(95,156,255,0.45)
+            );
+    }
+
+    .sales-point {
+        fill: #08101f;
+
+        stroke: #6fa6ff;
+
+        stroke-width: 4;
+
+        cursor: pointer;
+
+        transition: 0.25s;
+    }
+
+    .sales-point:hover {
+        fill: #6fa6ff;
+
+        stroke: white;
+    }
+
+    .chart-labels {
+        display: flex;
+
+        justify-content: space-between;
+
+        gap: 8px;
+
+        margin-top: 5px;
+    }
+
+    .chart-labels span {
+        flex: 1;
+
+        text-align: center;
+
+        color: #66758d;
+
+        font-size: 9px;
+
+        white-space: nowrap;
+    }
+
+
+    /* =========================================
+       CHART SUMMARY
+    ========================================= */
+
+    .chart-summary {
+        display: grid;
+
+        grid-template-columns:
+            repeat(3, 1fr);
+
+        gap: 12px;
+
+        margin-top: 20px;
+
+        padding-top: 18px;
+
+        border-top:
+            1px solid #1b2942;
+    }
+
+    .chart-summary div {
+        padding: 14px;
+
+        background: #091426;
+
+        border:
+            1px solid #182844;
+
+        border-radius: 11px;
+    }
+
+    .chart-summary span {
+        display: block;
+
+        color: #66758d;
+
+        font-size: 9px;
+
+        text-transform: uppercase;
+
+        letter-spacing: 1px;
+
+        margin-bottom: 7px;
+    }
+
+    .chart-summary strong {
+        color: #dce7fa;
+
+        font-size: 15px;
+    }
+
+    .trend-up {
+        color: #5ee6aa !important;
+    }
+
+    .trend-down {
+        color: #ff7185 !important;
+    }
+
+
+    /* =========================================
+       MODEL PERFORMANCE
+    ========================================= */
+
+    .model-name {
+        padding: 12px;
+
+        border-radius: 10px;
+
+        background: #0b1830;
+
+        border:
+            1px solid #203b70;
+
+        color: #78a5ff;
+
+        font-size: 12px;
+
+        font-weight: 700;
+    }
+
+    .score {
+        margin-top: 25px;
+
+        padding: 25px;
+
+        text-align: center;
+
+        background: #091426;
+
+        border-radius: 14px;
+    }
+
+    .score strong {
+        display: block;
+
+        color: #5f9cff;
+
+        font-size: 42px;
+    }
+
+    .score span {
+        color: #687892;
+
+        font-size: 11px;
+    }
+
+    .model-details {
+        margin-top: 20px;
+    }
+
+    .model-row {
+        display: flex;
+
+        justify-content: space-between;
+
+        padding: 13px 0;
+
+        border-bottom:
+            1px solid #18243a;
+    }
+
+    .model-row span {
+        color: #66758d;
+
+        font-size: 11px;
+    }
+
+    .model-row strong {
+        color: #dbe4f5;
+
+        font-size: 11px;
+    }
+
+    .success {
+        color: #5ee6aa !important;
+    }
+
+
+    /* =========================================
+       HISTORY
+    ========================================= */
+
+    .history {
+        margin-top: 20px;
+    }
+
+    .history table {
+        width: 100%;
+
+        border-collapse: collapse;
+    }
+
+    .history th {
+        padding: 14px;
+
+        text-align: left;
+
+        color: #65738b;
+
+        font-size: 10px;
+
+        background: #0b1425;
+    }
+
+    .history td {
+        padding: 14px;
+
+        color: #a4b0c2;
+
+        font-size: 11px;
+
+        border-bottom:
+            1px solid #172237;
+    }
+
+    .sales-value {
+        color: #6fa6ff !important;
+
+        font-weight: 700;
+    }
+
+
+    /* =========================================
+       EMPTY CHART
+    ========================================= */
+
+    .empty-chart {
+        min-height: 280px;
+
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+
+        justify-content: center;
+
+        text-align: center;
+    }
+
+    .empty-icon {
+        font-size: 38px;
+
+        margin-bottom: 12px;
+    }
+
+    .empty-chart h3 {
+        color: #dbe5f5;
+
+        margin: 0 0 7px;
+    }
+
+    .empty-chart p {
+        color: #61708a;
+
+        font-size: 12px;
+    }
+
+
+    /* =========================================
+       FOOTER
+    ========================================= */
+
+    .dashboard-footer {
+        text-align: center;
+
+        margin-top: 45px;
+
+        padding: 25px;
+
+        color: #4d5b73;
+
+        font-size: 10px;
+    }
+
+
+    /* =========================================
+       RESPONSIVE
+    ========================================= */
+
+    @media (max-width: 1000px) {
+
+        .stats {
+            grid-template-columns:
+                repeat(2, 1fr);
+        }
+
+        .dashboard-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .filter-form {
+            grid-template-columns:
+                repeat(2, 1fr);
+        }
+
+    }
+
+    @media (max-width: 600px) {
+
+        .dashboard-container {
+            width: 92%;
+        }
+
+        .stats {
+            grid-template-columns: 1fr;
+        }
+
+        .filter-form {
+            grid-template-columns: 1fr;
+        }
+
+        .dashboard-heading h1 {
+            font-size: 29px;
+        }
+
+        .navigation {
+            gap: 2px;
+        }
+
+        .navigation a {
+            padding: 8px;
+
+            font-size: 10px;
+        }
+
+        .brand-name small {
+            display: none;
+        }
+
+        .chart-summary {
+            grid-template-columns: 1fr;
+        }
+
+    }
+
+</style>
+
+
+</head>
+
+<body>
+
+<!-- =========================================
+     NAVBAR
+========================================= -->
+
+<div class="navbar">
+
+
+<div class="brand">
+
+    <img
+        src="{{ url_for(
+            'static',
+            filename='images/store_ai.png'
+        ) }}"
+        alt="SalesAI">
+
+    <div class="brand-name">
+
+        <span>SalesAI</span>
+
+        <small>
+            SALES FORECASTING
+        </small>
+
+    </div>
+
+</div>
+
+
+<div class="navigation">
+
+    <a href="/">
+        Home
+    </a>
+
+    <a href="/predict">
+        Predict
+    </a>
+
+    <a href="/dashboard"
+       class="active">
+        Dashboard
+    </a>
+
+    <a href="/about">
+        About
+    </a>
+
+</div>
+
+
+</div>
+
+<!-- =========================================
+     DASHBOARD
+========================================= -->
+
+<div class="dashboard-container">
+
+
+<!-- HEADER -->
+
+<div class="dashboard-heading">
+
+    <small>
+        SALES ANALYTICS
+    </small>
+
+    <h1>
+        Prediction Dashboard
+    </h1>
+
+    <p>
+        Monitor your AI-powered sales predictions
+        and business performance.
+    </p>
+
+</div>
+
+
+
+<!-- =========================================
+     FILTER PANEL
+========================================= -->
+
+<div class="filter-panel">
+
+    <div class="filter-title">
+        Filter Predictions
+    </div>
+
+
+    <form
+        method="GET"
+        action="/dashboard"
+        class="filter-form">
+
+
+        <!-- STORE -->
+
+        <div class="filter-group">
+
+            <label>
+                Store
+            </label>
+
+            <select name="store">
+
+                <option value="All">
+                    All Stores
+                </option>
+
+                {% for store in stores %}
+
+                <option
+                    value="{{ store }}"
+                    {% if selected_store|string == store|string %}
+                        selected
+                    {% endif %}
+                >
+
+                    Store {{ store }}
+
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+
+        <!-- DATE -->
+
+        <div class="filter-group">
+
+            <label>
+                Date
+            </label>
+
+            <input
+                type="date"
+                name="date"
+                value="{{ selected_date }}">
+
+        </div>
+
+
+        <!-- MIN SALES -->
+
+        <div class="filter-group">
+
+            <label>
+                Minimum Sales
+            </label>
+
+            <input
+                type="number"
+                step="0.01"
+                name="min_sales"
+                placeholder="Example: 1000"
+                value="{{ min_sales }}">
+
+        </div>
+
+
+        <!-- MAX SALES -->
+
+        <div class="filter-group">
+
+            <label>
+                Maximum Sales
+            </label>
+
+            <input
+                type="number"
+                step="0.01"
+                name="max_sales"
+                placeholder="Example: 10000"
+                value="{{ max_sales }}">
+
+        </div>
+
+
+        <!-- BUTTONS -->
+
+        <div class="filter-buttons">
+
+            <button
+                type="submit"
+                class="filter-btn">
+
+                Apply Filters
+
+            </button>
+
+
+            <a
+                href="/dashboard"
+                class="clear-btn">
+
+                Clear
+
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+
+<!-- =========================================
+     KPI CARDS
+========================================= -->
+
+<div class="stats">
+
+
+    <div class="stat-card">
+
+        <span>
+            Total Sales
+        </span>
+
+        <h2>
+            ₹ {{ total_sales }}
+        </h2>
+
+        <p>
+            Combined predicted sales
+        </p>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <span>
+            Average Sales
+        </span>
+
+        <h2>
+            ₹ {{ average_sales }}
+        </h2>
+
+        <p>
+            Average prediction
+        </p>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <span>
+            Highest Prediction
+        </span>
+
+        <h2>
+            ₹ {{ highest_sales }}
+        </h2>
+
+        <p>
+            Maximum forecast
+        </p>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <span>
+            Predictions
+        </span>
+
+        <h2>
+            {{ prediction_count }}
+        </h2>
+
+        <p>
+            Total predictions
+        </p>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================
+     CHART + MODEL
+========================================= -->
+
+<div class="dashboard-grid">
+
+
+    <!-- =====================================
+         PROFESSIONAL LINE CHART
+    ====================================== -->
+
+    <div class="dashboard-box">
+
+        <div class="box-title">
+
+            Date vs Predicted Sales
+
+        </div>
+
+
+        {% if chart_data %}
+
+
+        <div class="line-chart">
+
+
+            <!-- Y AXIS -->
+
+            <div class="chart-y-axis">
+
+                <span>
+                    High
+                </span>
+
+                <span>
+                    Medium
+                </span>
+
+                <span>
+                    Low
+                </span>
+
+            </div>
+
+
+            <!-- CHART -->
+
+            <div class="chart-area">
+
+
+                {% set max_value =
+                    chart_data
+                    | map(attribute='value')
+                    | max
+                %}
+
+
+                <svg
+                    class="sales-line-chart"
+                    viewBox="0 0 1000 350"
+                    preserveAspectRatio="none">
+
+
+                    <!-- GRID -->
+
+                    <line
+                        x1="0"
+                        y1="50"
+                        x2="1000"
+                        y2="50"
+                        class="grid-line"/>
+
+                    <line
+                        x1="0"
+                        y1="150"
+                        x2="1000"
+                        y2="150"
+                        class="grid-line"/>
+
+                    <line
+                        x1="0"
+                        y1="250"
+                        x2="1000"
+                        y2="250"
+                        class="grid-line"/>
+
+                    <line
+                        x1="0"
+                        y1="330"
+                        x2="1000"
+                        y2="330"
+                        class="grid-line"/>
+
+
+                    <!-- SALES LINE -->
+
+                    <polyline
+                        class="sales-line"
+                        points="
+
+                        {% for item in chart_data %}
+
+                            {% set x =
+                                (
+                                    loop.index0
+                                    * 1000
+                                    /
+                                    (
+                                        (chart_data|length - 1)
+                                        if chart_data|length > 1
+                                        else 1
+                                    )
+                                )
+                            %}
+
+                            {% set y =
+                                330
+                                -
+                                (
+                                    (
+                                        item.value
+                                        /
+                                        max_value
+                                    )
+                                    * 280
+                                )
+                            %}
+
+                            {{ x }},{{ y }}
+
+                        {% endfor %}
+
+                        "/>
+
+
+                    <!-- DATA POINTS -->
+
+                    {% for item in chart_data %}
+
+                        {% set x =
+                            (
+                                loop.index0
+                                * 1000
+                                /
+                                (
+                                    (chart_data|length - 1)
+                                    if chart_data|length > 1
+                                    else 1
+                                )
+                            )
+                        %}
+
+                        {% set y =
+                            330
+                            -
+                            (
+                                (
+                                    item.value
+                                    /
+                                    max_value
+                                )
+                                * 280
+                            )
+                        %}
+
+
+                        <circle
+                            cx="{{ x }}"
+                            cy="{{ y }}"
+                            r="7"
+                            class="sales-point">
+
+                            <title>
+                                {{ item.label }}
+                                :
+                                ₹ {{ item.value }}
+                            </title>
+
+                        </circle>
+
+                    {% endfor %}
+
+
+                </svg>
+
+
+                <!-- DATE LABELS -->
+
+                <div class="chart-labels">
+
+                    {% for item in chart_data %}
+
+                    <span>
+                        {{ item.label }}
+                    </span>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- CHART SUMMARY -->
+
+        <div class="chart-summary">
+
+
+            <div>
+
+                <span>
+                    Latest Prediction
+                </span>
+
+                <strong>
+                    ₹ {{ chart_data[-1].value }}
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Data Points
+                </span>
+
+                <strong>
+                    {{ chart_data|length }}
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Trend
+                </span>
+
+
+                {% if chart_data|length > 1 %}
+
+
+                    {% if
+                        chart_data[-1].value
+                        >=
+                        chart_data[-2].value
+                    %}
+
+                        <strong class="trend-up">
+                            ↑ Increasing
+                        </strong>
+
+                    {% else %}
+
+                        <strong class="trend-down">
+                            ↓ Decreasing
+                        </strong>
+
+                    {% endif %}
+
+
+                {% else %}
+
+                    <strong>
+                        Stable
+                    </strong>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        {% else %}
+
+
+        <!-- EMPTY -->
+
+        <div class="empty-chart">
+
+            <div class="empty-icon">
+                📊
+            </div>
+
+            <h3>
+                No Prediction Data
+            </h3>
+
+            <p>
+                Make a prediction to generate
+                the sales trend chart.
+            </p>
+
+        </div>
+
+
+        {% endif %}
+
+    </div>
+
+
+
+    <!-- =====================================
+         MODEL PERFORMANCE
+    ====================================== -->
+
+    <div class="dashboard-box">
+
+        <div class="box-title">
+            Model Performance
+        </div>
+
+
+        <div class="model-name">
+            XGBoost Regressor
+        </div>
+
+
+        <div class="score">
+
+            <strong>
+                89.9%
+            </strong>
+
+            <span>
+                R² MODEL SCORE
+            </span>
+
+        </div>
+
+
+        <div class="model-details">
+
+
+            <div class="model-row">
+
+                <span>
+                    Algorithm
+                </span>
+
+                <strong>
+                    XGBoost
+                </strong>
+
+            </div>
+
+
+            <div class="model-row">
+
+                <span>
+                    Features
+                </span>
+
+                <strong>
+                    13
+                </strong>
+
+            </div>
+
+
+            <div class="model-row">
+
+                <span>
+                    Dataset
+                </span>
+
+                <strong>
+                    Rossmann
+                </strong>
+
+            </div>
+
+
+            <div class="model-row">
+
+                <span>
+                    Status
+                </span>
+
+                <strong class="success">
+                    Active
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================
+     PREDICTION HISTORY
+========================================= -->
+
+<div class="dashboard-box history">
+
+    <div class="box-title">
+        Prediction History
+    </div>
+
+
+    {% if history %}
+
+
+    <div style="overflow-x:auto;">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        #
+                    </th>
+
+                    <th>
+                        Store
+                    </th>
+
+                    <th>
+                        Date
+                    </th>
+
+                    <th>
+                        Predicted Sales
+                    </th>
+
+                    <th>
+                        Promo
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+
+                {% for row in history %}
+
+
+                <tr>
+
+                    <td>
+                        {{ loop.index }}
+                    </td>
+
+
+                    <td>
+                        {{ row.get(
+                            'Store',
+                            '-'
+                        ) }}
+                    </td>
+
+
+                    <td>
+                        {{ row.get(
+                            'Date',
+                            '-'
+                        ) }}
+                    </td>
+
+
+                    <td class="sales-value">
+
+                        ₹
+
+                        {{ row.get(
+                            'PredictedSales',
+                            '-'
+                        ) }}
+
+                    </td>
+
+
+                    <td>
+
+                        {{ row.get(
+                            'Promo',
+                            '-'
+                        ) }}
+
+                    </td>
+
+
+                    <td class="success">
+
+                        Predicted
+
+                    </td>
+
+                </tr>
+
+
+                {% endfor %}
+
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    {% else %}
+
+
+    <div style="
+        padding:40px;
+        text-align:center;
+        color:#61708a;
+    ">
+
+        No prediction history available.
+
+    </div>
+
+
+    {% endif %}
+
+</div>
+
+
+
+<!-- =========================================
+     FOOTER
+========================================= -->
+
+<div class="dashboard-footer">
+
+    © 2026 Sales Forecasting &amp;
+    Demand Prediction System
+
+</div>
+
+</div>
+
+</body>
+
+</html>
+

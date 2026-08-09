@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>SalesAI | Daily Prediction</title>
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}">
+
+<style>
+
+    body {
+        margin: 0;
+        background: #050817 !important;
+        color: white !important;
+    }
+
+    /* =========================================
+       PAGE
+    ========================================= */
+
+    .predict-page {
+        width: 90%;
+        max-width: 1100px;
+
+        margin: auto;
+
+        padding: 50px 0 70px;
+    }
+
+
+    /* =========================================
+       HEADER
+    ========================================= */
+
+    .predict-header {
+        text-align: center;
+
+        margin-bottom: 35px;
+    }
+
+    .predict-header small {
+        color: #5f8cff;
+
+        font-size: 11px;
+
+        font-weight: 700;
+
+        letter-spacing: 2px;
+    }
+
+    .predict-header h1 {
+        margin: 12px 0;
+
+        font-size: 40px;
+
+        color: white;
+    }
+
+    .predict-header p {
+        max-width: 600px;
+
+        margin: auto;
+
+        color: #7d8ba3;
+
+        font-size: 13px;
+
+        line-height: 1.7;
+    }
+
+
+    /* =========================================
+       FORM CARD
+    ========================================= */
+
+    .predict-card {
+
+        max-width: 850px;
+
+        margin: auto;
+
+        padding: 32px;
+
+        background:
+            linear-gradient(
+                145deg,
+                #111d35,
+                #080e1c
+            );
+
+        border:
+            1px solid #1d2b49;
+
+        border-radius: 20px;
+
+        box-shadow:
+            0 25px 60px
+            rgba(0,0,0,0.4);
+    }
+
+
+    /* =========================================
+       FORM GRID
+    ========================================= */
+
+    .form-grid {
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 18px;
+    }
+
+
+    .form-group {
+
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 7px;
+    }
+
+
+    .form-group label {
+
+        color: #8b98ad;
+
+        font-size: 10px;
+
+        font-weight: 700;
+
+        text-transform: uppercase;
+
+        letter-spacing: 0.8px;
+    }
+
+
+    .form-group input,
+    .form-group select {
+
+        width: 100%;
+
+        box-sizing: border-box;
+
+        padding: 13px 14px;
+
+        border-radius: 9px;
+
+        border:
+            1px solid #253653;
+
+        background: #091426;
+
+        color: #dbe4f5;
+
+        outline: none;
+
+        font-size: 12px;
+
+        transition: 0.25s;
+    }
+
+
+    .form-group input:focus,
+    .form-group select:focus {
+
+        border-color: #5f8cff;
+
+        box-shadow:
+            0 0 0 3px
+            rgba(95,140,255,0.08);
+    }
+
+
+    .form-group select option {
+
+        background: #091426;
+
+        color: white;
+    }
+
+
+    /* =========================================
+       BUTTON
+    ========================================= */
+
+    .predict-button {
+
+        width: 100%;
+
+        margin-top: 25px;
+
+        padding: 15px;
+
+        border: none;
+
+        border-radius: 10px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #2452dc,
+                #5f9cff
+            );
+
+        color: white;
+
+        font-size: 13px;
+
+        font-weight: 700;
+
+        cursor: pointer;
+
+        transition: 0.25s;
+
+        box-shadow:
+            0 12px 30px
+            rgba(60,110,255,0.25);
+    }
+
+
+    .predict-button:hover {
+
+        transform:
+            translateY(-3px);
+
+        box-shadow:
+            0 18px 35px
+            rgba(60,110,255,0.35);
+    }
+
+
+    /* =========================================
+       RESULT
+    ========================================= */
+
+    .result-card {
+
+        max-width: 850px;
+
+        margin: 25px auto 0;
+
+        padding: 30px;
+
+        text-align: center;
+
+        background:
+            linear-gradient(
+                145deg,
+                #0d1c36,
+                #091120
+            );
+
+        border:
+            1px solid #31558f;
+
+        border-radius: 18px;
+
+        box-shadow:
+            0 20px 50px
+            rgba(0,0,0,0.35);
+    }
+
+
+    .result-label {
+
+        display: block;
+
+        color: #71809a;
+
+        font-size: 10px;
+
+        text-transform: uppercase;
+
+        letter-spacing: 1.5px;
+
+        margin-bottom: 10px;
+    }
+
+
+    .result-value {
+
+        display: block;
+
+        color: #6fa6ff;
+
+        font-size: 42px;
+
+        font-weight: 800;
+
+        margin-bottom: 8px;
+    }
+
+
+    .result-message {
+
+        color: #5ee6aa;
+
+        font-size: 11px;
+    }
+
+
+    /* =========================================
+       INFO
+    ========================================= */
+
+    .prediction-info {
+
+        max-width: 850px;
+
+        margin: 20px auto 0;
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(3, 1fr);
+
+        gap: 12px;
+    }
+
+
+    .info-item {
+
+        padding: 15px;
+
+        text-align: center;
+
+        background: #091120;
+
+        border:
+            1px solid #172943;
+
+        border-radius: 10px;
+    }
+
+
+    .info-item span {
+
+        display: block;
+
+        color: #58677e;
+
+        font-size: 9px;
+
+        margin-bottom: 5px;
+    }
+
+
+    .info-item strong {
+
+        color: #dbe4f5;
+
+        font-size: 12px;
+    }
+
+
+    /* =========================================
+       RESPONSIVE
+    ========================================= */
+
+    @media (max-width: 700px) {
+
+        .predict-page {
+
+            width: 92%;
+
+        }
+
+
+        .predict-header h1 {
+
+            font-size: 30px;
+
+        }
+
+
+        .form-grid {
+
+            grid-template-columns: 1fr;
+
+        }
+
+
+        .prediction-info {
+
+            grid-template-columns: 1fr;
+
+        }
+
+    }
+
+</style>
+
+
+</head>
+
+<body>
+
+<!-- =========================================
+     NAVBAR
+========================================= -->
+
+<div class="navbar">
+
+
+<div class="brand">
+
+    <img
+        src="{{ url_for(
+            'static',
+            filename='images/store_ai.png'
+        ) }}"
+        alt="SalesAI">
+
+
+    <div class="brand-name">
+
+        <span>
+            SalesAI
+        </span>
+
+        <small>
+            SALES FORECASTING
+        </small>
+
+    </div>
+
+</div>
+
+
+<div class="navigation">
+
+    <a href="/">
+        Home
+    </a>
+
+    <a href="/predict"
+       class="active">
+        Predict
+    </a>
+
+    <a href="/dashboard">
+        Dashboard
+    </a>
+
+    <a href="/about">
+        About
+    </a>
+
+</div>
+
+
+</div>
+
+<!-- =========================================
+     PREDICTION PAGE
+========================================= -->
+
+<div class="predict-page">
+
+
+<div class="predict-header">
+
+    <small>
+        AI SALES FORECASTING
+    </small>
+
+    <h1>
+        Daily Sales Prediction
+    </h1>
+
+    <p>
+        Enter the store and business details
+        below to generate an AI-powered
+        daily sales prediction.
+    </p>
+
+</div>
+
+
+<!-- =====================================
+     FORM
+====================================== -->
+
+<form
+    action="/predict"
+    method="POST"
+    class="predict-card">
+
+
+    <div class="form-grid">
+
+
+        <!-- STORE -->
+
+        <div class="form-group">
+
+            <label>
+                Store
+            </label>
+
+            <input
+                type="number"
+                name="Store"
+                min="1"
+                required
+                placeholder="Example: 4">
+
+        </div>
+
+
+        <!-- DAY OF WEEK -->
+
+        <div class="form-group">
+
+            <label>
+                Day Of Week
+            </label>
+
+            <input
+                type="number"
+                name="DayOfWeek"
+                min="1"
+                max="7"
+                required
+                placeholder="1 - 7">
+
+        </div>
+
+
+        <!-- OPEN -->
+
+        <div class="form-group">
+
+            <label>
+                Store Open
+            </label>
+
+            <select
+                name="Open"
+                required>
+
+                <option value="">
+                    Select
+                </option>
+
+                <option value="1">
+                    Open
+                </option>
+
+                <option value="0">
+                    Closed
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- PROMO -->
+
+        <div class="form-group">
+
+            <label>
+                Promo
+            </label>
+
+            <select
+                name="Promo"
+                required>
+
+                <option value="">
+                    Select
+                </option>
+
+                <option value="1">
+                    Yes
+                </option>
+
+                <option value="0">
+                    No
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- STATE HOLIDAY -->
+
+        <div class="form-group">
+
+            <label>
+                State Holiday
+            </label>
+
+            <select
+                name="StateHoliday"
+                required>
+
+                <option value="0">
+                    None
+                </option>
+
+                <option value="1">
+                    Public Holiday
+                </option>
+
+                <option value="2">
+                    Easter Holiday
+                </option>
+
+                <option value="3">
+                    Christmas
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- SCHOOL HOLIDAY -->
+
+        <div class="form-group">
+
+            <label>
+                School Holiday
+            </label>
+
+            <select
+                name="SchoolHoliday"
+                required>
+
+                <option value="0">
+                    No
+                </option>
+
+                <option value="1">
+                    Yes
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- STORE TYPE -->
+
+        <div class="form-group">
+
+            <label>
+                Store Type
+            </label>
+
+            <select
+                name="StoreType"
+                required>
+
+                <option value="a">
+                    Type A
+                </option>
+
+                <option value="b">
+                    Type B
+                </option>
+
+                <option value="c">
+                    Type C
+                </option>
+
+                <option value="d">
+                    Type D
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- ASSORTMENT -->
+
+        <div class="form-group">
+
+            <label>
+                Assortment
+            </label>
+
+            <select
+                name="Assortment"
+                required>
+
+                <option value="a">
+                    Basic
+                </option>
+
+                <option value="b">
+                    Extra
+                </option>
+
+                <option value="c">
+                    Extended
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- COMPETITION -->
+
+        <div class="form-group">
+
+            <label>
+                Competition Distance
+            </label>
+
+            <input
+                type="number"
+                name="CompetitionDistance"
+                step="0.01"
+                required
+                placeholder="Example: 1270">
+
+        </div>
+
+
+        <!-- YEAR -->
+
+        <div class="form-group">
+
+            <label>
+                Year
+            </label>
+
+            <input
+                type="number"
+                name="Year"
+                min="2010"
+                max="2030"
+                required
+                placeholder="Example: 2026">
+
+        </div>
+
+
+        <!-- MONTH -->
+
+        <div class="form-group">
+
+            <label>
+                Month
+            </label>
+
+            <input
+                type="number"
+                name="Month"
+                min="1"
+                max="12"
+                required
+                placeholder="1 - 12">
+
+        </div>
+
+
+        <!-- DAY -->
+
+        <div class="form-group">
+
+            <label>
+                Day
+            </label>
+
+            <input
+                type="number"
+                name="Day"
+                min="1"
+                max="31"
+                required
+                placeholder="1 - 31">
+
+        </div>
+
+
+        <!-- WEEK -->
+
+        <div class="form-group">
+
+            <label>
+                Week
+            </label>
+
+            <input
+                type="number"
+                name="Week"
+                min="1"
+                max="53"
+                required
+                placeholder="1 - 53">
+
+        </div>
+
+
+    </div>
+
+
+    <button
+        type="submit"
+        class="predict-button">
+
+        🤖 Predict Daily Sales
+
+    </button>
+
+
+</form>
+
+
+<!-- =====================================
+     RESULT
+====================================== -->
+
+{% if prediction %}
+
+<div class="result-card">
+
+    <span class="result-label">
+        Predicted Daily Sales
+    </span>
+
+    <span class="result-value">
+        ₹ {{ prediction }}
+    </span>
+
+    <span class="result-message">
+        ✓ Prediction generated successfully
+    </span>
+
+</div>
+
+{% endif %}
+
+
+<!-- =====================================
+     INFO
+====================================== -->
+
+<div class="prediction-info">
+
+
+    <div class="info-item">
+
+        <span>
+            MODEL
+        </span>
+
+        <strong>
+            XGBoost
+        </strong>
+
+    </div>
+
+
+    <div class="info-item">
+
+        <span>
+            FEATURES
+        </span>
+
+        <strong>
+            13
+        </strong>
+
+    </div>
+
+
+    <div class="info-item">
+
+        <span>
+            OUTPUT
+        </span>
+
+        <strong>
+            Daily Sales
+        </strong>
+
+    </div>
+
+
+</div>
+
+
+</div>
+
+</body>
+
+</html>
+
+
+
